@@ -1,0 +1,10 @@
+{
+    "$schema": "https://willi84.github.io/project-tracking-record/project.schema.json",
+    "🗂️ name": "iTup backend",
+    "🎯 goal": "Providing data for iTup frontend",
+    "🔖 version": "1.0.0",
+    "📄 id": "ROB-004",
+    "⚖️ license": "MIT",
+    "👩 author": "Robert Willemelis",
+    "🚦 status": "active"
+}
