@@ -1,6 +1,17 @@
 import type { Source } from './apps/api/api.d';
+import { FS } from './_shared/fs/fs';
+import { LOG } from './_shared/log/log';
 
-export const IS_DEV = false;
+// Read file IS_DEV
+export const IS_DEV = FS.hasFile('IS_DEV') ? true : false;
+LOG.OK(`IS_DEV: ${IS_DEV}`);
+
+const TOKEN = process.env.GITLAB_TU_PAT || '';
+if (IS_DEV && TOKEN !== '') {
+    LOG.OK(
+        `GITLAB_TU_PAT: ${TOKEN.substring(0, 1)}...${TOKEN.substring(TOKEN.length - 1)}`
+    );
+}
 
 export const PER_PAGE = IS_DEV ? 10 : 100;
 export const MAX_PAGES = IS_DEV ? 2 : 5;

@@ -1,3 +1,4 @@
+import { command } from '../cmd/cmd';
 import { normalizeText } from '../utils/utils';
 
 const SHEET_URL =
@@ -86,16 +87,8 @@ export const extractTrainIspMatchers = (sheetJson: any) => {
     return { matchers, keyColumn, contextColumn };
 };
 
-export const getSheetData = async (id: string, tab: string) => {
+export const getSheetData = (id: string, tab: string) => {
     const googleSheetUrl = SHEET_URL.replace('{id}', id).replace('{tab}', tab);
-    const response = await fetch(googleSheetUrl);
-
-    if (!response.ok) {
-        throw new Error(
-            `Google Sheets lookup failed with status ${response.status}`
-        );
-    }
-
-    const text = await response.text();
+    const text = command(`curl -s "${googleSheetUrl}"`);
     return parseGoogleVisualizationJson(text);
 };
