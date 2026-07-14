@@ -1,5 +1,9 @@
 import type { Source } from './api.d';
-import { getProjectsFromHTML, proceedGitlabProjects } from './api';
+import {
+    getProjectsFromHTML,
+    proceedGitlabProjects,
+    proceedSheetData,
+} from './api';
 
 describe('getProjectsFromHTML', () => {
     const FN = getProjectsFromHTML;
@@ -95,5 +99,41 @@ describe('proceedGitlabProjects', () => {
             },
         ];
         expect(FN([ITEM])).toEqual(EXPECTED);
+    });
+});
+
+describe('proceedSheetData', () => {
+    const FN = proceedSheetData;
+    const SHEET_JSON = {
+        table: {
+            cols: [
+                { label: 'Name' },
+                { label: 'Description' },
+                { label: 'Goal' },
+                { label: 'Zeitstempel' },
+            ],
+            rows: [
+                {
+                    c: [
+                        { v: 'Project Name' },
+                        { v: 'Project Description' },
+                        { v: 'Project Goal' },
+                        { v: '2025-07-17T22:10:23.873Z' },
+                    ],
+                },
+            ],
+        },
+    };
+    it('should transform Google Sheet data to our format', () => {
+        const EXPECTED = [
+            {
+                name: 'Project Name',
+                description: 'Project Description',
+                goals: ['Project Goal'],
+                lastUpdated: '2025-07-17T22:10:23.873Z',
+                source: 'google form',
+            },
+        ];
+        expect(FN(SHEET_JSON)).toEqual(EXPECTED);
     });
 });

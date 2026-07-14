@@ -1,6 +1,6 @@
+import { FS } from '@robert.tools/fs';
 import type { Source } from './apps/api/api.d';
-import { FS } from './_shared/fs/fs';
-import { LOG } from './_shared/log/log';
+import { LOG } from '@robert.tools/log';
 
 // Read file IS_DEV
 export const IS_DEV = FS.hasFile('IS_DEV') ? true : false;
@@ -52,3 +52,20 @@ export const sources: Source[] = [
         status: 'current',
     },
 ];
+
+const FILE = 'output/projects.json';
+
+export const CONFIG = {
+    TOKEN,
+    FILE,
+    SHEET: {
+        ID: SHEET_ID,
+        TAB: SHEET_TAB,
+    },
+    GITLAB: {
+        API: GIT_API,
+        MAX_PAGES,
+        PER_PAGE,
+    },
+    SOURCES: sources,
+};

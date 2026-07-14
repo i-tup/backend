@@ -35,5 +35,14 @@
     "ts-jest": "^29.4.11",
     "tsx": "^4.22.3",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@robert.tools/cmd": "^1.0.0",
+    "@robert.tools/colors": "^1.0.0",
+    "@robert.tools/convert": "^1.0.0",
+    "@robert.tools/fs": "^1.0.0",
+    "@robert.tools/google": "^1.0.1",
+    "@robert.tools/http": "^1.0.0",
+    "@robert.tools/log": "^1.0.0"
   }
 }

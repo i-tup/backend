@@ -1,6 +1,12 @@
-import { absoluteUrl, cleanSpaces } from '../../_shared/utils/utils';
+import type { CONFIG_ITEM } from '../../index.d';
 import type { Project, Source, Status } from './api.d';
 import { parse } from 'node-html-parser';
+import { getAllProjects } from '../../_shared/gitlab/gitlab';
+import { LOG } from '@robert.tools/log';
+import { FS } from '@robert.tools/fs';
+import { absoluteUrl, cleanSpaces } from '@robert.tools/convert';
+import { command } from '@robert.tools/cmd';
+import { getSheetData } from '@robert.tools/google';
 
 export const getProjectsFromHTML = (html: string, source: Source) => {
     const root = parse(html);
@@ -72,4 +78,73 @@ export const proceedGitlabProjects = (items: any[]): Project[] => {
         all.push(item);
     }
     return all;
+};
+
+export const proceedSheetData = (sheetJson: any) => {
+    const all: Project[] = [];
+    for (const item of sheetJson.table.rows) {
+        const data = item.c;
+        const dataSet: Partial<Project> = {};
+        let i = 0;
+        for (const row of sheetJson.table.cols) {
+            // dataSet[row.label] = row.context;
+
+            const key = row.label.toLowerCase() as keyof Project;
+            if (key.indexOf('zeitstempel') > -1) {
+                dataSet['lastUpdated'] = data[i].v;
+            } else if (key.indexOf('goal') > -1) {
+                dataSet['goals'] = data[i].v
+                    .split(',')
+                    .map((g: string) => g.trim());
+            } else {
+                dataSet[key] = data[i].v;
+            }
+            dataSet['source'] = 'google form';
+            i++;
+        }
+        all.push(dataSet as Project);
+    }
+    return all;
+};
+
+const crawlSource = (source: Source): Project[] => {
+    const html = command(`curl -s "${source.url}"`);
+
+    const projects: Project[] = getProjectsFromHTML(html, source);
+    return projects;
+};
+
+export const getProjects = (config: CONFIG_ITEM) => {
+    try {
+        const all: Project[] = [];
+        const gitlabProjects = getAllProjects(
+            config.GITLAB.API,
+            config.TOKEN,
+            config.GITLAB.MAX_PAGES,
+            config.GITLAB.PER_PAGE
+        );
+        // console.log(gitlabProjects.items.length);
+        const items = proceedGitlabProjects(gitlabProjects.items);
+        all.push(...items);
+        const sheetJson = getSheetData(config.SHEET.ID, config.SHEET.TAB);
+        const sheetProjects = proceedSheetData(sheetJson);
+        LOG.OK(`sheetProjects: ${sheetProjects.length}`);
+        all.push(...sheetProjects);
+        for (const source of config.SOURCES) {
+            LOG.INFO(`crawl: ${source.url}`);
+            all.push(...crawlSource(source));
+        }
+        const finalData = {
+            data: all,
+            lastUpdated: new Date().toISOString(),
+            $schema: './projects.schema.json',
+        };
+        // copy projects.schmea
+        //   await fs.copyFile('projects.schema.json', 'output/projects.schema.json');
+        FS.writeFile(config.FILE, JSON.stringify(finalData, null, 2));
+        LOG.OK(`done: ${all.length} projects written to ${config.FILE}`);
+    } catch (error: any) {
+        LOG.FAIL(error);
+        process.exit(1);
+    }
 };

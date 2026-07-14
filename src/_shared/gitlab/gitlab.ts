@@ -1,7 +1,7 @@
-import { colors } from '../../colors';
-import { getResponse } from '../http/http';
-import { colorize, _LOG, LOG } from './../log/log';
+import { _LOG, colorize, LOG } from '@robert.tools/log';
 import type { ProjectResult, ProjectPage } from './gitlab.d';
+import { colors } from '@robert.tools/colors';
+import { getResponse } from '@robert.tools/http';
 
 const MAX_RETRIES = 3;
 
