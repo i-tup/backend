@@ -69,3 +69,31 @@ export const CONFIG = {
     },
     SOURCES: sources,
 };
+
+export const DEFAULT_DATA = {
+    id: '',
+    name: '',
+    description: '',
+    building: 'unknown',
+    co2e: 0,
+    lead: 'unknown',
+    base: 0,
+    cost: 0,
+    eur: 0,
+    kpi: {
+        carbon: 0,
+        cost: 0,
+        sdg: 0,
+        lockin: 0,
+        data: 0,
+    },
+    synenergies: [],
+    dimension: 'Digital',
+    // image: '',
+    // url: '',
+    institution: 'unknown',
+    status: 'unknown' as 'unknown',
+    source: '',
+    goals: [],
+    last_updated: '',
+};

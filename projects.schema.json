@@ -25,13 +25,49 @@
       "required": [
         "name",
         "description",
-        "institution"
+        "institution",
+        "source",
+        "id",
+        "lead",
+        "dimension",
+        "co2e",
+        "base",
+        "cost",
+        "eur",
+        "status"
       ],
       "properties": {
-        "lastUpdated": {
+        "last_updated": {
           "type": "string"
         },
         "name": {
+          "type": "string"
+        },
+        "building": {
+          "type": "string"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "dimension": {
+          "type": "string"
+        },
+        "base": {
+          "type": "number"
+        },
+        "cost": {
+          "type": "number"
+        },
+        "eur": {
+          "type": "number"
+        },
+        "co2e": {
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "source": {
           "type": "string"
         },
         "description": {
@@ -53,14 +89,65 @@
           "enum": [
             "current",
             "completed",
-            "unknown"
+            "unknown",
+            "ongoing",
+            "concept",
+            "finalized"
           ]
+        },
+        "kpi": {
+          "type": "object",
+          "properties": {
+            "carbon": {
+              "type": "number"
+            },
+            "cost": {
+              "type": "number"
+            },
+            "sdg": {
+              "type": "number"
+            },
+            "lockin": {
+              "type": "number"
+            },
+            "data": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "carbon",
+            "cost",
+            "sdg",
+            "lockin",
+            "data"
+          ],
+          "additionalProperties": false
+        },
+        "synenergies": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2,
+            "items": false
+          }
         },
         "ai": {
           "type": "string"
         },
         "goals": {
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
         }
       },
       "additionalProperties": false
