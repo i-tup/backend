@@ -41,6 +41,7 @@ jobs:
         run: |
           mkdir -p dist
           cp output/projects.json dist/projects.json
+          cp output/projects.schema.json dist/projects.schema.json
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
