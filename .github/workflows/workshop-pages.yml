@@ -20,7 +20,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      GITLAB_TU_PAT: ${{ secrets.GITLAB_TU_PAT }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_ENRICH_ENABLED: ${{ secrets.OPENAI_ENRICH_ENABLED }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
