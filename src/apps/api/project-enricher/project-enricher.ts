@@ -342,7 +342,12 @@ const money = (value: number): string => `$${value.toFixed(6)}`;
 export const enrichProjectDocument = async (
     document: ProjectDocument
 ): Promise<ProjectDocument> => {
+    LOG.INFO('load enrichment')
     const config = createConfig();
+    LOG.INFO(`enabled: ${config.enabled}`);
+    LOG.INFO(`env enabled: ${process.env.OPENAI_ENRICH_ENABLED}`);
+    LOG.INFO(`env key: ${process.env.OPENAI_API_KEY.length}`);
+    LOG.INFO(`model: ${config.model}`);
 
     if (!config.enabled) {
         LOG.OK('[openai enrich] skipped, OPENAI_ENRICH_ENABLED is not true');
@@ -354,6 +359,7 @@ export const enrichProjectDocument = async (
         return document;
     }
 
+    LOG.OK('start enrichment')
     const result: Project[] = [];
     let totalCostUsd = 0;
     let totalInputTokens = 0;
