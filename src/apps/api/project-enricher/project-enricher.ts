@@ -53,7 +53,7 @@ const createConfig = (): EnricherConfig => ({
     apiKey: process.env.OPENAI_API_KEY || '',
     model: process.env.OPENAI_MODEL || 'gpt-5-mini',
     maxItems: numberEnv('MAX_ITEMS', Number.POSITIVE_INFINITY),
-    maxCostUsd: numberEnv('MAX_COST_USD', 0.1),
+    maxCostUsd: numberEnv('MAX_COST_USD', 1.0),
     maxCostPerItemUsd: numberEnv('MAX_COST_PER_ITEM_USD', 0.02),
     inputUsdPerMillion: numberEnv('OPENAI_INPUT_USD_PER_MILLION', 0.25),
     outputUsdPerMillion: numberEnv('OPENAI_OUTPUT_USD_PER_MILLION', 2),
