@@ -28,6 +28,8 @@ export const getProjects = async (config: CONFIG_ITEM) => {
         add(getAllGoogleSheetProjects(config), data, 'google sheet');
         add(getAllGitlabProjects(config), data, 'gitlab');
         add(getAllProjectsFromSources(config.SOURCES), data, 'homepage');
+        LOG.INFO(`env enabled: ${process.env.OPENAI_ENRICH_ENABLED}`);
+        LOG.INFO(`env api: ${process.env.OPENAI_API_KEY.length}`);
         const finalData = await enrichProjectDocument({
             data,
             lastUpdated,
