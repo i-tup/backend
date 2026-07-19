@@ -1,4 +1,5 @@
 import { getProjects } from './apps/api/api';
 import { CONFIG } from './index.config';
 
-void getProjects(CONFIG);
+// deactivated
+//void getProjects(CONFIG);
